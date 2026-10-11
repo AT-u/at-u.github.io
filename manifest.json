@@ -1,8 +1,8 @@
 {
   "name": "Inventario Gato Negro Bikers",
   "short_name": "Gato Negro",
-  "start_url": "https://meme-tv.github.io/Inventario-Gato-Negro-Bikers/",
-  "scope": "https://meme-tv.github.io/Inventario-Gato-Negro-Bikers/",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#0d1b2a",
   "theme_color": "#0d1b2a",
