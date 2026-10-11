@@ -1,8 +1,0 @@
-[{
-      "relation": ["delegate_permission/common.handle_all_urls"],
-      "target": {
-        "namespace": "android_app",
-        "package_name": "io.github.meme_tv.twa",
-        "sha256_cert_fingerprints": ["84:C5:92:4B:C3:73:98:51:14:F4:F8:B0:87:16:93:7B:3E:0A:DF:AB:E0:40:AF:8C:0C:3A:31:17:57:AC:D0:0A"]
-      }
-    }]

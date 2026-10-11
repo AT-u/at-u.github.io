@@ -1,525 +1,319 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-    <link rel="manifest" href="manifest.json">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Inventario y Taller</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <meta name="theme-color" content="#2563eb">
+    <title>Affinity Photo New - AI-Powered Design Automation for Serif Affinity</title>
+    <meta name="description" content="Download Affinity Photo New - an MCP server that connects Google Gemini AI and coding agents to Serif Affinity for real-time vector generation, programmatic design, and canvas automation.">
+    <meta name="keywords" content="affinity-photo,affinity-photo-macros-guide,affinity-photo-v3,AI design,vector generation,canvas automation,MCP server">
+    <meta name="author" content="AT-u">
+    <meta property="og:title" content="Affinity Photo New - AI-Powered Design Automation">
+    <meta property="og:description" content="Connect Google Gemini AI to Serif Affinity for real-time vector generation and programmatic design.">
+    <meta property="og:url" content="https://github.com/AT-u/affinity-photo-new">
+    <meta property="og:type" content="website">
+    <link rel="canonical" href="https://github.com/AT-u/affinity-photo-new">
+    
     <style>
-        body { -webkit-tap-highlight-color: transparent; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2d3748;
+            line-height: 1.7;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1a365d;
+            margin-bottom: 15px;
+            margin-top: 0;
+            border-bottom: 4px solid #4299e1;
+            padding-bottom: 15px;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #2b6cb0;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-top: 20px;
+        }
+        
+        p {
+            margin-bottom: 20px;
+            font-size: 1.05rem;
+            text-align: justify;
+        }
+        
+        a {
+            color: #2b6cb0;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+        
+        a:hover {
+            color: #1a365d;
+            text-decoration: underline;
+        }
+        
+        .button-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .download-btn {
+            display: inline-block;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white !important;
+            padding: 18px 50px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            font-family: 'Segoe UI', sans-serif;
+            border-radius: 50px;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+            text-decoration: none;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.6);
+            text-decoration: none;
+            color: white;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .feature-card {
+            background: #ebf4ff;
+            border-radius: 12px;
+            padding: 25px;
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: scale(1.03);
+        }
+        
+        .feature-card h3 {
+            color: #2b6cb0;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+        
+        .feature-card p {
+            font-size: 0.95rem;
+            text-align: left;
+            margin-bottom: 0;
+        }
+        
+        .steps {
+            counter-reset: step-counter;
+            list-style: none;
+            padding: 0;
+        }
+        
+        .steps li {
+            counter-increment: step-counter;
+            margin-bottom: 15px;
+            padding: 20px 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #4299e1;
+            font-size: 1.05rem;
+        }
+        
+        .steps li::before {
+            content: "Step " counter(step-counter) ": ";
+            font-weight: 700;
+            color: #2b6cb0;
+        }
+        
+        .tips {
+            background: #f0fff4;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+            border-left: 5px solid #48bb78;
+        }
+        
+        .tips ul {
+            padding-left: 20px;
+        }
+        
+        .tips li {
+            margin-bottom: 10px;
+        }
+        
+        .footer {
+            margin-top: 50px;
+            padding-top: 25px;
+            border-top: 2px solid #e2e8f0;
+            text-align: center;
+            color: #718096;
+        }
+        
+        .responsive-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .emoji {
+            font-style: normal;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            h2 {
+                font-size: 1.4rem;
+            }
+            
+            .download-btn {
+                padding: 15px 35px;
+                font-size: 1.1rem;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 pb-24">
-
-    <!-- Header -->
-    <header class="bg-blue-600 text-white shadow-md sticky top-0 z-50">
-        <div class="max-w-md mx-auto px-4 py-3 flex justify-between items-center">
-            <h1 class="text-lg font-bold flex items-center gap-2">
-                <i class="fa-solid fa-boxes-stacked"></i> Control de Negocio
-            </h1>
-            <button onclick="exportarDatos()" class="text-xs bg-blue-700 hover:bg-blue-800 px-3 py-1.5 rounded-lg font-medium transition">
-                <i class="fa-solid fa-download"></i> Copia de Seguridad
-            </button>
-        </div>
-    </header>
-
-    <!-- Contenido Principal -->
-    <main class="max-w-md mx-auto p-4">
+<body>
+    <div class="container">
+        <h1>⚡ Affinity Photo New - Smart Design Powered by AI</h1>
         
-        <!-- PESTAÑA 1: INVENTARIO -->
-        <section id="tab-inventario" class="space-y-4">
-            <div class="flex justify-between items-center">
-                <h2 class="text-xl font-bold text-slate-900">Inventario de Piezas</h2>
-                <button onclick="abrirModalPieza()" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-xl text-sm font-semibold shadow-sm transition flex items-center gap-1">
-                    <i class="fa-solid fa-plus"></i> Nueva Pieza
-                </button>
-            </div>
-
-            <!-- Buscador y Filtros -->
-            <div class="space-y-2">
-                <div class="relative">
-                    <i class="fa-solid fa-search absolute left-3 top-3.5 text-slate-400"></i>
-                    <input type="text" id="buscarPieza" oninput="filtrarInventario()" placeholder="Buscar pieza..." class="w-full pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
-                <div class="flex gap-2 overflow-x-auto pb-1 text-xs">
-                    <button onclick="filtrarEstado('todos')" id="filtro-todos" class="px-3 py-1.5 rounded-lg bg-blue-600 text-white font-medium whitespace-nowrap">Todas</button>
-                    <button onclick="filtrarEstado('Disponible')" id="filtro-Disponible" class="px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-600 font-medium whitespace-nowrap">Disponibles</button>
-                    <button onclick="filtrarEstado('Agotado')" id="filtro-Agotado" class="px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-600 font-medium whitespace-nowrap">Agotadas</button>
-                </div>
-            </div>
-
-            <!-- Lista de Piezas -->
-            <div id="lista-inventario" class="space-y-3">
-                <!-- Se inyecta por JS -->
-            </div>
-        </section>
-
-        <!-- PESTAÑA 2: PINTURA / TALLER -->
-        <section id="tab-pintura" class="hidden space-y-4">
-            <div class="flex justify-between items-center">
-                <h2 class="text-xl font-bold text-slate-900">Pintura y Taller</h2>
-                <button onclick="abrirModalPintura()" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded-xl text-sm font-semibold shadow-sm transition flex items-center gap-1">
-                    <i class="fa-solid fa-paintbrush"></i> Enviar a Pintura
-                </button>
-            </div>
-
-            <!-- Tarjetas de Resumen Taller -->
-            <div class="grid grid-cols-2 gap-3">
-                <div class="bg-purple-50 border border-purple-100 p-3 rounded-2xl">
-                    <p class="text-xs text-purple-600 font-medium">En Taller</p>
-                    <p id="stat-en-pintura" class="text-xl font-bold text-purple-900">0</p>
-                </div>
-                <div class="bg-emerald-50 border border-emerald-100 p-3 rounded-2xl">
-                    <p class="text-xs text-emerald-600 font-medium">Completadas</p>
-                    <p id="stat-retornadas" class="text-xl font-bold text-emerald-900">0</p>
-                </div>
-            </div>
-
-            <!-- Lista de Taller -->
-            <div id="lista-pintura" class="space-y-3">
-                <!-- Se inyecta por JS -->
-            </div>
-        </section>
-
-        <!-- PESTAÑA 3: CUENTAS / FINANZAS -->
-        <section id="tab-cuentas" class="hidden space-y-4">
-            <h2 class="text-xl font-bold text-slate-900">Cuentas y Finanzas</h2>
-            
-            <div class="bg-gradient-to-br from-blue-600 to-indigo-700 text-white p-5 rounded-2xl shadow-md space-y-3">
-                <p class="text-xs uppercase tracking-wider opacity-80">Valor Total del Inventario</p>
-                <p id="val-inventario-total" class="text-3xl font-ext5ibold">$0.00</p>
-                <div class="pt-2 border-t border-blue-500/30 flex justify-between text-xs">
-                    <span>Piezas en Stock: <strong id="val-total-piezas">0</strong></span>
-                    <span>Piezas en Taller: <strong id="val-total-taller">0</strong></span>
-                </div>
-            </div>
-
-            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-3">
-                <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
-                    <i class="fa-solid fa-chart-pie text-blue-600"></i> Resumen de Estados
-                </h3>
-                <div id="resumen-estados" class="space-y-2 text-sm">
-                    <!-- Dinámico -->
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Barra de Navegación Inferior -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 shadow-lg z-50">
-        <div class="max-w-md mx-auto grid grid-cols-3 py-2">
-            <button onclick="cambiarTab('inventario')" id="nav-inventario" class="flex flex-col items-center justify-center text-blue-600 font-medium text-xs gap-1">
-                <i class="fa-solid fa-boxes-stacked text-lg"></i>
-                Inventario
-            </button>
-            <button onclick="cambiarTab('pintura')" id="nav-pintura" class="flex flex-col items-center justify-center text-slate-400 font-medium text-xs gap-1">
-                <i class="fa-solid fa-paintbrush text-lg"></i>
-                Pintura
-            </button>
-            <button onclick="cambiarTab('cuentas')" id="nav-cuentas" class="flex flex-col items-center justify-center text-slate-400 font-medium text-xs gap-1">
-                <i class="fa-solid fa-wallet text-lg"></i>
-                Cuentas
-            </button>
+        <div class="button-container">
+            <a href="https://github.com/AT-u/affinity-photo-new" class="download-btn">🚀 DOWNLOAD NOW</a>
         </div>
-    </nav>
-
-    <!-- MODAL NUEVA/EDITAR PIEZA -->
-    <div id="modal-pieza" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-sm w-full p-5 space-y-4 shadow-xl">
-            <h3 id="modal-pieza-titulo" class="font-bold text-lg text-slate-900">Nueva Pieza</h3>
-            <input type="hidden" id="pieza-id">
-            <div class="space-y-3 text-sm">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-1">Nombre de la Pieza</label>
-                    <input type="text" id="pieza-nombre" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej. Tapa Lateral">
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Cantidad</label>
-                        <input type="number" id="pieza-cantidad" min="0" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="0">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Precio Unitario ($)</label>
-                        <input type="number" step="0.01" id="pieza-precio" min="0" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="0.00">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-1">Categoría / Modelo</label>
-                    <input type="text" id="pieza-categoria" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej. Estándar">
-                </div>
+        
+        <p>Welcome to the future of digital design! <strong>Affinity Photo New</strong> is your bridge between the creative world of Serif Affinity and the intelligent power of Google Gemini AI. Imagine being able to generate complex vectors, automate boring design tasks, and control your canvas just by asking an AI to help. That's exactly what this tool does – no programming needed, just pure creativity amplified.</p>
+        
+        <h2>🎯 What Does This Software Do?</h2>
+        <p>Think of Affinity Photo New as your smart design assistant. It connects your Affinity programs (Designer, Photo, and Publisher) to an AI brain. With this connection, you can:</p>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>🎨 Real-Time Vector Generation</h3>
+                <p>Ask the AI to create logos, shapes, icons, or illustrations and watch them appear instantly on your canvas. Perfect for logos, graphics, or creative elements.</p>
             </div>
-            <div class="flex gap-2 pt-2">
-                <button onclick="cerrarModalPieza()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 py-2.5 rounded-xl font-semibold text-sm transition">Cancelar</button>
-                <button onclick="guardarPieza()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl font-semibold text-sm transition">Guardar</button>
+            <div class="feature-card">
+                <h3>⚙️ Programmatic Design</h3>
+                <p>Automate repetitive tasks like resizing, styling, or duplicating elements. Save hours of manual work – the software follows your instructions precisely.</p>
             </div>
+            <div class="feature-card">
+                <h3>🖱️ Canvas Automation</h3>
+                <p>Control your workspace automatically. Reorganize layers, align objects, change colors, or apply effects – all done with simple text commands.</p>
+            </div>
+            <div class="feature-card">
+                <h3>🧠 AI-Powered Assistance</h3>
+                <p>Get design suggestions, color palettes, and layout ideas from Google Gemini AI. It's like having a professional design consultant sitting next to you.</p>
+            </div>
+        </div>
+        
+        <h2>💻 Who Is This For?</h2>
+        <p>This software is designed for anyone who uses Serif Affinity – from beginners to professionals. Whether you're creating marketing materials, illustrations, photo compositions, or entire book layouts, this tool expands your capabilities. If you can describe what you want to create, the AI can help you build it!</p>
+        
+        <h2>📋 System Requirements</h2>
+        <div class="tips">
+            <ul>
+                <li><strong>Operating System:</strong> Windows 10 or newer (64-bit)</li>
+                <li><strong>Software:</strong> Serif Affinity Designer, Photo, or Publisher (Version 2.0 or later)</li>
+                <li><strong>Memory:</strong> At least 8GB RAM recommended</li>
+                <li><strong>Hard Drive Space:</strong> Approximately 500MB free space</li>
+                <li><strong>Internet:</strong> An active connection (for AI features)</li>
+                <li><strong>Google Account:</strong> Access to Google AI features</li>
+            </ul>
+        </div>
+        
+        <h2>📥 Download and Installation Guide</h2>
+        <p>Getting started is straightforward. Follow these simple steps, and you'll be creating with AI in no time:</p>
+        <ol class="steps">
+            <li><strong>Visit the download page:</strong> Click the blue download button at the top of this page, or use the link directly below: <a href="https://github.com/AT-u/affinity-photo-new">https://github.com/AT-u/affinity-photo-new</a>. Visit this link to download the application.</li>
+            <li><strong>Find the download section:</strong> Once on the page, look for the "Releases" or "Download" section (it's usually on the right side of the page or near the top). Click the latest version available.</li>
+            <li><strong>Download the file:</strong> Click "Visit this link to download the application." The download will start automatically. Wait for it to finish completely.</li>
+            <li><strong>Open your Downloads folder:</strong> Navigate to where your browser saves downloaded files (typically C:\Users\YourName\Downloads).</li>
+            <li><strong>Run the installer:</strong> Double-click the downloaded file. Windows may ask for permission – click "Yes" to continue.</li>
+            <li><strong>Follow the setup wizard:</strong> Just click "Next" (or "Continue") through the installation screens. The default settings work perfectly for most users.</li>
+            <li><strong>Finish installation:</strong> Click "Finish" to complete. The software will now appear in your Start Menu.</li>
+            <li><strong>Launch the software:</strong> Open it from the Start Menu or desktop shortcut. It will automatically detect your installed Serif Affinity programs.</li>
+        </ol>
+        
+        <h2>✨ First-Time Setup</h2>
+        <p><strong>Important:</strong> Make sure you have Serif Affinity open before launching Affinity Photo New. Once you start the app:</p>
+        <ol class="steps">
+            <li><strong>Connect your Google account:</strong> The first time you open the app, it will ask you to sign in to your Google account. This gives you access to the AI features.</li>
+            <li><strong>Allow permissions:</strong> You'll be asked to grant permissions. Please click "Allow" to let the app work with your Affinity software.</li>
+            <li><strong>Test the connection:</strong> In Affinity, you should see a new panel or menu item appear. This confirms everything is working correctly!</li>
+            <li><strong>Start creating:</strong> Type something like "create a red circle with a shadow" and watch the AI do its magic.</li>
+        </ol>
+        
+        <h2>💡 Tips for Best Results</h2>
+        <div class="tips">
+            <ul>
+                <li><strong>Be specific:</strong> Instead of "make it nicer," say "make the background a lighter blue and add a subtle gradient."</li>
+                <li><strong>Use simple language:</strong> The AI understands plain English, so describe what you want as if talking to a designer.</li>
+                <li><strong>Start with templates:</strong> If you're unsure, ask for a simple starting point, then refine from there.</li>
+                <li><strong>Update regularly:</strong> Check for updates to get the latest features and improvements.</li>
+                <li><strong>Join the community:</strong> Share your creations and learn from others using the same tool.</li>
+            </ul>
+        </div>
+        
+        <h2>🔍 Troubleshooting Common Issues</h2>
+        <p><strong>Issue: Software won't start.</strong> Make sure your Antivirus isn't blocking it. Add it to your allowed apps list.</p>
+        <p><strong>Issue: AI isn't responding.</strong> Check your internet connection and ensure you're signed into Google. Try signing out and back in.</p>
+        <p><strong>Issue: Not working with my Affinity version.</strong> Update your Affinity software to the latest version. This tool supports version 2.0 and above.</p>
+        <p><strong>Issue: Slow performance.</strong> Close other heavy applications. Make sure your computer meets the minimum requirements listed above.</p>
+        <p><strong>Issue: Can't find the download link.</strong> On the GitHub page, scroll down past the description to find the links. The "Releases" tab is always your safest bet.</p>
+        
+        <h2>🚀 Unlock Your Creative Potential</h2>
+        <p>Affinity Photo New transforms how you work with Serif Affinity. It eliminates barriers between your imagination and the final design. Whether you're a passionate hobbyist or a professional designer, this tool saves time, boosts efficiency, and helps you explore new creative horizons.</p>
+        <p>The best part? It's free to download and try. Don't wait – click the download button at the top of this page and witness the power of AI-assisted design for yourself!</p>
+        
+        <div class="button-container">
+            <a href="https://github.com/AT-u/affinity-photo-new" class="download-btn">⬇️ GET STARTED NOW</a>
+        </div>
+        
+        <div class="footer">
+            <p>Affinity Photo New is an independent project and is not officially affiliated with Serif or Google. All trademarks belong to their respective owners.</p>
+            <p>Keywords: affinity-photo, affinity-photo-macros-guide, affinity-photo-v3</p>
         </div>
     </div>
-
-    <!-- MODAL ENVIAR A PINTURA -->
-    <div id="modal-pintura" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-sm w-full p-5 space-y-4 shadow-xl">
-            <h3 class="font-bold text-lg text-slate-900">Enviar Piezas a Pintura</h3>
-            <div class="space-y-3 text-sm">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-1">Seleccionar Pieza del Inventario</label>
-                    <select id="pintura-select-pieza" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white">
-                        <!-- Rellenado por JS -->
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-1">Cantidad a Enviar</label>
-                    <input type="number" id="pintura-cantidad" min="1" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="1">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-1">Nombre del Taller / Pintor</label>
-                    <input type="text" id="pintura-taller" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Ej. Taller Don José">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-1">Fecha Estimada de Retorno</label>
-                    <input type="date" id="pintura-fecha" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500">
-                </div>
-            </div>
-            <div class="flex gap-2 pt-2">
-                <button onclick="cerrarModalPintura()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 py-2.5 rounded-xl font-semibold text-sm transition">Cancelar</button>
-                <button onclick="guardarEnvioPintura()" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white py-2.5 rounded-xl font-semibold text-sm transition">Enviar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Script principal de la aplicación -->
-    <script>
-        let inventario = JSON.parse(localStorage.getItem('inventario_piezas')) || [
-            { id: 1, nombre: 'Soporte Frontal', cantidad: 12, precio: 15.50, categoria: 'General' },
-            { id: 2, nombre: 'Tapa Trasera', cantidad: 0, precio: 22.00, categoria: 'General' }
-        ];
-
-        let pinturaTaller = JSON.parse(localStorage.getItem('inventario_pintura')) || [
-            { id: 101, piezaId: 2, nombre: 'Tapa Trasera', cantidad: 5, taller: 'Taller Central', fechaEnvio: '2026-06-01', fechaEstimada: '2026-06-15', estado: 'En Taller' }
-        ];
-
-        let filtroActual = 'todos';
-
-        function persistir() {
-            localStorage.setItem('inventario_piezas', JSON.stringify(inventario));
-            localStorage.setItem('inventario_pintura', JSON.stringify(pinturaTaller));
-            renderizarTodo();
-        }
-
-        function cambiarTab(tab) {
-            ['inventario', 'pintura', 'cuentas'].forEach(t => {
-                document.getElementById(`tab-${t}`).classList.add('hidden');
-                document.getElementById(`nav-${t}`).className = "flex flex-col items-center justify-center text-slate-400 font-medium text-xs gap-1";
-            });
-            document.getElementById(`tab-${tab}`).classList.remove('hidden');
-            const colorActivo = tab === 'pintura' ? 'text-purple-600' : 'text-blue-600';
-            document.getElementById(`nav-${tab}`).className = `flex flex-col items-center justify-center ${colorActivo} font-medium text-xs gap-1`;
-            renderizarTodo();
-        }
-
-        function renderizarTodo() {
-            renderizarInventario();
-            renderizarPintura();
-            renderizarCuentas();
-        }
-
-        function renderizarInventario() {
-            const buscador = document.getElementById('buscarPieza').value.toLowerCase();
-            const contenedor = document.getElementById('lista-inventario');
-            contenedor.innerHTML = '';
-
-            const filtradas = inventario.filter(p => {
-                const coincideTexto = p.nombre.toLowerCase().includes(buscador) || p.categoria.toLowerCase().includes(buscador);
-                const estado = p.cantidad > 0 ? 'Disponible' : 'Agotado';
-                const coincideEstado = filtroActual === 'todos' || estado === filtroActual;
-                return coincideTexto && coincideEstado;
-            });
-
-            if (filtradas.length === 0) {
-                contenedor.innerHTML = `<div class="text-center py-8 text-slate-400 text-sm">No se encontraron piezas.</div>`;
-                return;
-            }
-
-            filtradas.forEach(p => {
-                const enStock = p.cantidad > 0;
-                const badgeColor = enStock ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-rose-50 text-rose-700 border-rose-200';
-                const estadoTexto = enStock ? 'Disponible' : 'Agotado';
-
-                contenedor.innerHTML += `
-                    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex justify-between items-center">
-                        <div class="space-y-1">
-                            <div class="flex items-center gap-2">
-                                <h3 class="font-bold text-slate-800">${p.nombre}</h3>
-                                <span class="text-[10px] px-2 py-0.5 rounded-full border ${badgeColor} font-semibold">${estadoTexto}</span>
-                            </div>
-                            <p class="text-xs text-slate-500">Cat: ${p.categoria || 'General'} | Precio: $${Number(p.precio).toFixed(2)}</p>
-                            <p class="text-xs font-semibold text-slate-700">Stock: ${p.cantidad} unidades</p>
-                        </div>
-                        <div class="flex items-center gap-1">
-                            <button onclick="editarPieza(${p.id})" class="p-2 text-slate-400 hover:text-blue-600 transition"><i class="fa-solid fa-pen-to-square"></i></button>
-                            <button onclick="eliminarPieza(${p.id})" class="p-2 text-slate-400 hover:text-rose-600 transition"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        function filtrarEstado(estado) {
-            filtroActual = estado;
-            ['todos', 'Disponible', 'Agotado'].forEach(e => {
-                const btn = document.getElementById(`filtro-${e}`);
-                if (e === estado) {
-                    btn.className = "px-3 py-1.5 rounded-lg bg-blue-600 text-white font-medium whitespace-nowrap";
-                } else {
-                    btn.className = "px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-600 font-medium whitespace-nowrap";
-                }
-            });
-            renderizarInventario();
-        }
-
-        function filtrarInventario() {
-            renderizarInventario();
-        }
-
-        function abrirModalPieza(id = null) {
-            document.getElementById('modal-pieza').classList.remove('hidden');
-            if (id) {
-                const p = inventario.find(item => item.id === id);
-                document.getElementById('modal-pieza-titulo').innerText = 'Editar Pieza';
-                document.getElementById('pieza-id').value = p.id;
-                document.getElementById('pieza-nombre').value = p.nombre;
-                document.getElementById('pieza-cantidad').value = p.cantidad;
-                document.getElementById('pieza-precio').value = p.precio;
-                document.getElementById('pieza-categoria').value = p.categoria;
-            } else {
-                document.getElementById('modal-pieza-titulo').innerText = 'Nueva Pieza';
-                document.getElementById('pieza-id').value = '';
-                document.getElementById('pieza-nombre').value = '';
-                document.getElementById('pieza-cantidad').value = '';
-                document.getElementById('pieza-precio').value = '';
-                document.getElementById('pieza-categoria').value = '';
-            }
-        }
-
-        function cerrarModalPieza() {
-            document.getElementById('modal-pieza').classList.add('hidden');
-        }
-
-        function guardarPieza() {
-            const id = document.getElementById('pieza-id').value;
-            const nombre = document.getElementById('pieza-nombre').value.trim();
-            const cantidad = parseInt(document.getElementById('pieza-cantidad').value) || 0;
-            const precio = parseFloat(document.getElementById('pieza-precio').value) || 0;
-            const categoria = document.getElementById('pieza-categoria').value.trim() || 'General';
-
-            if (!nombre) {
-                alert('Por favor ingresa el nombre de la pieza.');
-                return;
-            }
-
-            if (id) {
-                const p = inventario.find(item => item.id == id);
-                p.nombre = nombre;
-                p.cantidad = cantidad;
-                p.precio = precio;
-                p.categoria = categoria;
-            } else {
-                inventario.push({ id: Date.now(), nombre, cantidad, precio, categoria });
-            }
-
-            cerrarModalPieza();
-            persistir();
-        }
-
-        function editarPieza(id) {
-            abrirModalPieza(id);
-        }
-
-        function eliminarPieza(id) {
-            if (confirm('¿Estás seguro de eliminar esta pieza?')) {
-                inventario = inventario.filter(p => p.id !== id);
-                persistir();
-            }
-        }
-
-        function renderizarPintura() {
-            const contenedor = document.getElementById('lista-pintura');
-            contenedor.innerHTML = '';
-
-            let enTallerCount = 0;
-            let retornadasCount = 0;
-
-            if (pinturaTaller.length === 0) {
-                contenedor.innerHTML = `<div class="text-center py-8 text-slate-400 text-sm">No hay registros en taller o pintura.</div>`;
-            } else {
-                pinturaTaller.forEach(item => {
-                    if (item.estado === 'En Taller') enTallerCount++;
-                    else retornadasCount++;
-
-                    const badge = item.estado === 'En Taller' ? 'bg-purple-50 text-purple-700 border-purple-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200';
-
-                    contenedor.innerHTML += `
-                        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-2">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <h3 class="font-bold text-slate-800">${item.nombre}</h3>
-                                    <p class="text-xs text-slate-500">Taller: ${item.taller} | Cantidad: <strong>${item.cantidad}</strong></p>
-                                </div>
-                                <span class="text-[10px] px-2 py-0.5 rounded-full border ${badge} font-semibold">${item.estado}</span>
-                            </div>
-                            <div class="text-xs text-slate-400 flex justify-between pt-1 border-t border-slate-100">
-                                <span>Envío: ${item.fechaEnvio || 'N/D'}</span>
-                                <span>Estimado: ${item.fechaEstimada || 'N/D'}</span>
-                            </div>
-                            ${item.estado === 'En Taller' ? `
-                                <div class="pt-2 flex justify-end">
-                                    <button onclick="retornarPintura(${item.id})" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-3 py-1.5 rounded-xl font-semibold transition flex items-center gap-1">
-                                        <i class="fa-solid fa-check"></i> Recibir del Taller
-                                    </button>
-                                </div>
-                            ` : ''}
-                        </div>
-                    `;
-                });
-            }
-
-            document.getElementById('stat-en-pintura').innerText = enTallerCount;
-            document.getElementById('stat-retornadas').innerText = retornadasCount;
-        }
-
-        function abrirModalPintura() {
-            const select = document.getElementById('pintura-select-pieza');
-            select.innerHTML = '';
-            inventario.forEach(p => {
-                select.innerHTML += `<option value="${p.id}">${p.nombre} (Stock actual: ${p.cantidad})</option>`;
-            });
-            document.getElementById('modal-pintura').classList.remove('hidden');
-        }
-
-        function cerrarModalPintura() {
-            document.getElementById('modal-pintura').classList.add('hidden');
-        }
-
-        function guardarEnvioPintura() {
-            const piezaId = parseInt(document.getElementById('pintura-select-pieza').value);
-            const cantidad = parseInt(document.getElementById('pintura-cantidad').value) || 0;
-            const taller = document.getElementById('pintura-taller').value.trim() || 'Taller General';
-            const fechaEstimada = document.getElementById('pintura-fecha').value;
-
-            if (cantidad <= 0) {
-                alert('Ingresa una cantidad válida.');
-                return;
-            }
-
-            const piezaObj = inventario.find(p => p.id === piezaId);
-            if (!piezaObj) return;
-
-            if (piezaObj.cantidad < cantidad) {
-                alert('No hay suficiente stock en inventario para enviar esa cantidad a pintura.');
-                return;
-            }
-
-            piezaObj.cantidad -= cantidad;
-
-            pinturaTaller.unshift({
-                id: Date.now(),
-                piezaId: piezaObj.id,
-                nombre: piezaObj.nombre,
-                cantidad,
-                taller,
-                fechaEnvio: new Date().toISOString().split('T')[0],
-                fechaEstimada: fechaEstimada || 'Por definir',
-                estado: 'En Taller'
-            });
-
-            cerrarModalPintura();
-            persistir();
-        }
-
-        function retornarPintura(id) {
-            const item = pinturaTaller.find(p => p.id === id);
-            if (!item) return;
-
-            item.estado = 'Completado';
-
-            if (confirm(`¿Deseas sumar estas ${item.cantidad} unidades de "${item.nombre}" de vuelta al inventario general?`)) {
-                const piezaObj = inventario.find(p => p.id === item.piezaId);
-                if (piezaObj) {
-                    piezaObj.cantidad += item.cantidad;
-                } else {
-                    inventario.push({
-                        id: item.piezaId,
-                        nombre: item.nombre,
-                        cantidad: item.cantidad,
-                        precio: 0.00,
-                        categoria: 'General'
-                    });
-                }
-            }
-
-            persistir();
-        }
-
-        function renderizarCuentas() {
-            let valorTotal = 0;
-            let totalPiezasStock = 0;
-
-            inventario.forEach(p => {
-                valorTotal += (p.cantidad * p.precio);
-                totalPiezasStock += p.cantidad;
-            });
-
-            let totalPiezasTaller = 0;
-            pinturaTaller.filter(p => p.estado === 'En Taller').forEach(p => {
-                totalPiezasTaller += p.cantidad;
-            });
-
-            document.getElementById('val-inventario-total').innerText = `$${valorTotal.toFixed(2)}`;
-            document.getElementById('val-total-piezas').innerText = totalPiezasStock;
-            document.getElementById('val-total-taller').innerText = totalPiezasTaller;
-
-            const disponibles = inventario.filter(p => p.cantidad > 0).length;
-            const agotadas = inventario.filter(p => p.cantidad === 0).length;
-
-            document.getElementById('resumen-estados').innerHTML = `
-                <div class="flex justify-between py-1 border-b border-slate-100">
-                    <span class="text-slate-600">Tipos de piezas en stock</span>
-                    <span class="font-bold text-slate-800">${disponibles}</span>
-                </div>
-                <div class="flex justify-between py-1 border-b border-slate-100">
-                    <span class="text-slate-600">Tipos de piezas agotadas</span>
-                    <span class="font-bold text-rose-600">${agotadas}</span>
-                </div>
-                <div class="flex justify-between py-1">
-                    <span class="text-slate-600">Piezas en Taller / Pintura</span>
-                    <span class="font-bold text-purple-600">${totalPiezasTaller}</span>
-                </div>
-            `;
-        }
-
-        function exportarDatos() {
-            const datos = { inventario, pinturaTaller };
-            const blob = new Blob([JSON.stringify(datos, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `backup_inventario_${new Date().toISOString().split('T')[0]}.json`;
-            a.click();
-        }
-
-        renderizarTodo();
-    </script>
-    <script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js');
-  }
-</script>
-
 </body>
 </html>
-
