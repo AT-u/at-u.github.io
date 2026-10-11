@@ -1,1 +1,518 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Inventario y Taller</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="theme-color" content="#2563eb">
+    <style>
+        body { -webkit-tap-highlight-color: transparent; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 pb-24">
+
+    <!-- Header -->
+    <header class="bg-blue-600 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-md mx-auto px-4 py-3 flex justify-between items-center">
+            <h1 class="text-lg font-bold flex items-center gap-2">
+                <i class="fa-solid fa-boxes-stacked"></i> Control de Negocio
+            </h1>
+            <button onclick="exportarDatos()" class="text-xs bg-blue-700 hover:bg-blue-800 px-3 py-1.5 rounded-lg font-medium transition">
+                <i class="fa-solid fa-download"></i> Copia de Seguridad
+            </button>
+        </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="max-w-md mx-auto p-4">
+        
+        <!-- PESTAÑA 1: INVENTARIO -->
+        <section id="tab-inventario" class="space-y-4">
+            <div class="flex justify-between items-center">
+                <h2 class="text-xl font-bold text-slate-900">Inventario de Piezas</h2>
+                <button onclick="abrirModalPieza()" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-xl text-sm font-semibold shadow-sm transition flex items-center gap-1">
+                    <i class="fa-solid fa-plus"></i> Nueva Pieza
+                </button>
+            </div>
+
+            <!-- Buscador y Filtros -->
+            <div class="space-y-2">
+                <div class="relative">
+                    <i class="fa-solid fa-search absolute left-3 top-3.5 text-slate-400"></i>
+                    <input type="text" id="buscarPieza" oninput="filtrarInventario()" placeholder="Buscar pieza..." class="w-full pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="flex gap-2 overflow-x-auto pb-1 text-xs">
+                    <button onclick="filtrarEstado('todos')" id="filtro-todos" class="px-3 py-1.5 rounded-lg bg-blue-600 text-white font-medium whitespace-nowrap">Todas</button>
+                    <button onclick="filtrarEstado('Disponible')" id="filtro-Disponible" class="px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-600 font-medium whitespace-nowrap">Disponibles</button>
+                    <button onclick="filtrarEstado('Agotado')" id="filtro-Agotado" class="px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-600 font-medium whitespace-nowrap">Agotadas</button>
+                </div>
+            </div>
+
+            <!-- Lista de Piezas -->
+            <div id="lista-inventario" class="space-y-3">
+                <!-- Se inyecta por JS -->
+            </div>
+        </section>
+
+        <!-- PESTAÑA 2: PINTURA / TALLER -->
+        <section id="tab-pintura" class="hidden space-y-4">
+            <div class="flex justify-between items-center">
+                <h2 class="text-xl font-bold text-slate-900">Pintura y Taller</h2>
+                <button onclick="abrirModalPintura()" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded-xl text-sm font-semibold shadow-sm transition flex items-center gap-1">
+                    <i class="fa-solid fa-paintbrush"></i> Enviar a Pintura
+                </button>
+            </div>
+
+            <!-- Tarjetas de Resumen Taller -->
+            <div class="grid grid-cols-2 gap-3">
+                <div class="bg-purple-50 border border-purple-100 p-3 rounded-2xl">
+                    <p class="text-xs text-purple-600 font-medium">En Taller</p>
+                    <p id="stat-en-pintura" class="text-xl font-bold text-purple-900">0</p>
+                </div>
+                <div class="bg-emerald-50 border border-emerald-100 p-3 rounded-2xl">
+                    <p class="text-xs text-emerald-600 font-medium">Completadas</p>
+                    <p id="stat-retornadas" class="text-xl font-bold text-emerald-900">0</p>
+                </div>
+            </div>
+
+            <!-- Lista de Taller -->
+            <div id="lista-pintura" class="space-y-3">
+                <!-- Se inyecta por JS -->
+            </div>
+        </section>
+
+        <!-- PESTAÑA 3: CUENTAS / FINANZAS -->
+        <section id="tab-cuentas" class="hidden space-y-4">
+            <h2 class="text-xl font-bold text-slate-900">Cuentas y Finanzas</h2>
+            
+            <div class="bg-gradient-to-br from-blue-600 to-indigo-700 text-white p-5 rounded-2xl shadow-md space-y-3">
+                <p class="text-xs uppercase tracking-wider opacity-80">Valor Total del Inventario</p>
+                <p id="val-inventario-total" class="text-3xl font-ext5ibold">$0.00</p>
+                <div class="pt-2 border-t border-blue-500/30 flex justify-between text-xs">
+                    <span>Piezas en Stock: <strong id="val-total-piezas">0</strong></span>
+                    <span>Piezas en Taller: <strong id="val-total-taller">0</strong></span>
+                </div>
+            </div>
+
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-chart-pie text-blue-600"></i> Resumen de Estados
+                </h3>
+                <div id="resumen-estados" class="space-y-2 text-sm">
+                    <!-- Dinámico -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Barra de Navegación Inferior -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 shadow-lg z-50">
+        <div class="max-w-md mx-auto grid grid-cols-3 py-2">
+            <button onclick="cambiarTab('inventario')" id="nav-inventario" class="flex flex-col items-center justify-center text-blue-600 font-medium text-xs gap-1">
+                <i class="fa-solid fa-boxes-stacked text-lg"></i>
+                Inventario
+            </button>
+            <button onclick="cambiarTab('pintura')" id="nav-pintura" class="flex flex-col items-center justify-center text-slate-400 font-medium text-xs gap-1">
+                <i class="fa-solid fa-paintbrush text-lg"></i>
+                Pintura
+            </button>
+            <button onclick="cambiarTab('cuentas')" id="nav-cuentas" class="flex flex-col items-center justify-center text-slate-400 font-medium text-xs gap-1">
+                <i class="fa-solid fa-wallet text-lg"></i>
+                Cuentas
+            </button>
+        </div>
+    </nav>
+
+    <!-- MODAL NUEVA/EDITAR PIEZA -->
+    <div id="modal-pieza" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-5 space-y-4 shadow-xl">
+            <h3 id="modal-pieza-titulo" class="font-bold text-lg text-slate-900">Nueva Pieza</h3>
+            <input type="hidden" id="pieza-id">
+            <div class="space-y-3 text-sm">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Nombre de la Pieza</label>
+                    <input type="text" id="pieza-nombre" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej. Tapa Lateral">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Cantidad</label>
+                        <input type="number" id="pieza-cantidad" min="0" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="0">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Precio Unitario ($)</label>
+                        <input type="number" step="0.01" id="pieza-precio" min="0" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="0.00">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Categoría / Modelo</label>
+                    <input type="text" id="pieza-categoria" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ej. Estándar">
+                </div>
+            </div>
+            <div class="flex gap-2 pt-2">
+                <button onclick="cerrarModalPieza()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 py-2.5 rounded-xl font-semibold text-sm transition">Cancelar</button>
+                <button onclick="guardarPieza()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl font-semibold text-sm transition">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ENVIAR A PINTURA -->
+    <div id="modal-pintura" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-5 space-y-4 shadow-xl">
+            <h3 class="font-bold text-lg text-slate-900">Enviar Piezas a Pintura</h3>
+            <div class="space-y-3 text-sm">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Seleccionar Pieza del Inventario</label>
+                    <select id="pintura-select-pieza" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white">
+                        <!-- Rellenado por JS -->
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Cantidad a Enviar</label>
+                    <input type="number" id="pintura-cantidad" min="1" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="1">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Nombre del Taller / Pintor</label>
+                    <input type="text" id="pintura-taller" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Ej. Taller Don José">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Fecha Estimada de Retorno</label>
+                    <input type="date" id="pintura-fecha" class="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500">
+                </div>
+            </div>
+            <div class="flex gap-2 pt-2">
+                <button onclick="cerrarModalPintura()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 py-2.5 rounded-xl font-semibold text-sm transition">Cancelar</button>
+                <button onclick="guardarEnvioPintura()" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white py-2.5 rounded-xl font-semibold text-sm transition">Enviar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script principal de la aplicación -->
+    <script>
+        let inventario = JSON.parse(localStorage.getItem('inventario_piezas')) || [
+            { id: 1, nombre: 'Soporte Frontal', cantidad: 12, precio: 15.50, categoria: 'General' },
+            { id: 2, nombre: 'Tapa Trasera', cantidad: 0, precio: 22.00, categoria: 'General' }
+        ];
+
+        let pinturaTaller = JSON.parse(localStorage.getItem('inventario_pintura')) || [
+            { id: 101, piezaId: 2, nombre: 'Tapa Trasera', cantidad: 5, taller: 'Taller Central', fechaEnvio: '2026-06-01', fechaEstimada: '2026-06-15', estado: 'En Taller' }
+        ];
+
+        let filtroActual = 'todos';
+
+        function persistir() {
+            localStorage.setItem('inventario_piezas', JSON.stringify(inventario));
+            localStorage.setItem('inventario_pintura', JSON.stringify(pinturaTaller));
+            renderizarTodo();
+        }
+
+        function cambiarTab(tab) {
+            ['inventario', 'pintura', 'cuentas'].forEach(t => {
+                document.getElementById(`tab-${t}`).classList.add('hidden');
+                document.getElementById(`nav-${t}`).className = "flex flex-col items-center justify-center text-slate-400 font-medium text-xs gap-1";
+            });
+            document.getElementById(`tab-${tab}`).classList.remove('hidden');
+            const colorActivo = tab === 'pintura' ? 'text-purple-600' : 'text-blue-600';
+            document.getElementById(`nav-${tab}`).className = `flex flex-col items-center justify-center ${colorActivo} font-medium text-xs gap-1`;
+            renderizarTodo();
+        }
+
+        function renderizarTodo() {
+            renderizarInventario();
+            renderizarPintura();
+            renderizarCuentas();
+        }
+
+        function renderizarInventario() {
+            const buscador = document.getElementById('buscarPieza').value.toLowerCase();
+            const contenedor = document.getElementById('lista-inventario');
+            contenedor.innerHTML = '';
+
+            const filtradas = inventario.filter(p => {
+                const coincideTexto = p.nombre.toLowerCase().includes(buscador) || p.categoria.toLowerCase().includes(buscador);
+                const estado = p.cantidad > 0 ? 'Disponible' : 'Agotado';
+                const coincideEstado = filtroActual === 'todos' || estado === filtroActual;
+                return coincideTexto && coincideEstado;
+            });
+
+            if (filtradas.length === 0) {
+                contenedor.innerHTML = `<div class="text-center py-8 text-slate-400 text-sm">No se encontraron piezas.</div>`;
+                return;
+            }
+
+            filtradas.forEach(p => {
+                const enStock = p.cantidad > 0;
+                const badgeColor = enStock ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-rose-50 text-rose-700 border-rose-200';
+                const estadoTexto = enStock ? 'Disponible' : 'Agotado';
+
+                contenedor.innerHTML += `
+                    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex justify-between items-center">
+                        <div class="space-y-1">
+                            <div class="flex items-center gap-2">
+                                <h3 class="font-bold text-slate-800">${p.nombre}</h3>
+                                <span class="text-[10px] px-2 py-0.5 rounded-full border ${badgeColor} font-semibold">${estadoTexto}</span>
+                            </div>
+                            <p class="text-xs text-slate-500">Cat: ${p.categoria || 'General'} | Precio: $${Number(p.precio).toFixed(2)}</p>
+                            <p class="text-xs font-semibold text-slate-700">Stock: ${p.cantidad} unidades</p>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <button onclick="editarPieza(${p.id})" class="p-2 text-slate-400 hover:text-blue-600 transition"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button onclick="eliminarPieza(${p.id})" class="p-2 text-slate-400 hover:text-rose-600 transition"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function filtrarEstado(estado) {
+            filtroActual = estado;
+            ['todos', 'Disponible', 'Agotado'].forEach(e => {
+                const btn = document.getElementById(`filtro-${e}`);
+                if (e === estado) {
+                    btn.className = "px-3 py-1.5 rounded-lg bg-blue-600 text-white font-medium whitespace-nowrap";
+                } else {
+                    btn.className = "px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-600 font-medium whitespace-nowrap";
+                }
+            });
+            renderizarInventario();
+        }
+
+        function filtrarInventario() {
+            renderizarInventario();
+        }
+
+        function abrirModalPieza(id = null) {
+            document.getElementById('modal-pieza').classList.remove('hidden');
+            if (id) {
+                const p = inventario.find(item => item.id === id);
+                document.getElementById('modal-pieza-titulo').innerText = 'Editar Pieza';
+                document.getElementById('pieza-id').value = p.id;
+                document.getElementById('pieza-nombre').value = p.nombre;
+                document.getElementById('pieza-cantidad').value = p.cantidad;
+                document.getElementById('pieza-precio').value = p.precio;
+                document.getElementById('pieza-categoria').value = p.categoria;
+            } else {
+                document.getElementById('modal-pieza-titulo').innerText = 'Nueva Pieza';
+                document.getElementById('pieza-id').value = '';
+                document.getElementById('pieza-nombre').value = '';
+                document.getElementById('pieza-cantidad').value = '';
+                document.getElementById('pieza-precio').value = '';
+                document.getElementById('pieza-categoria').value = '';
+            }
+        }
+
+        function cerrarModalPieza() {
+            document.getElementById('modal-pieza').classList.add('hidden');
+        }
+
+        function guardarPieza() {
+            const id = document.getElementById('pieza-id').value;
+            const nombre = document.getElementById('pieza-nombre').value.trim();
+            const cantidad = parseInt(document.getElementById('pieza-cantidad').value) || 0;
+            const precio = parseFloat(document.getElementById('pieza-precio').value) || 0;
+            const categoria = document.getElementById('pieza-categoria').value.trim() || 'General';
+
+            if (!nombre) {
+                alert('Por favor ingresa el nombre de la pieza.');
+                return;
+            }
+
+            if (id) {
+                const p = inventario.find(item => item.id == id);
+                p.nombre = nombre;
+                p.cantidad = cantidad;
+                p.precio = precio;
+                p.categoria = categoria;
+            } else {
+                inventario.push({ id: Date.now(), nombre, cantidad, precio, categoria });
+            }
+
+            cerrarModalPieza();
+            persistir();
+        }
+
+        function editarPieza(id) {
+            abrirModalPieza(id);
+        }
+
+        function eliminarPieza(id) {
+            if (confirm('¿Estás seguro de eliminar esta pieza?')) {
+                inventario = inventario.filter(p => p.id !== id);
+                persistir();
+            }
+        }
+
+        function renderizarPintura() {
+            const contenedor = document.getElementById('lista-pintura');
+            contenedor.innerHTML = '';
+
+            let enTallerCount = 0;
+            let retornadasCount = 0;
+
+            if (pinturaTaller.length === 0) {
+                contenedor.innerHTML = `<div class="text-center py-8 text-slate-400 text-sm">No hay registros en taller o pintura.</div>`;
+            } else {
+                pinturaTaller.forEach(item => {
+                    if (item.estado === 'En Taller') enTallerCount++;
+                    else retornadasCount++;
+
+                    const badge = item.estado === 'En Taller' ? 'bg-purple-50 text-purple-700 border-purple-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200';
+
+                    contenedor.innerHTML += `
+                        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3 class="font-bold text-slate-800">${item.nombre}</h3>
+                                    <p class="text-xs text-slate-500">Taller: ${item.taller} | Cantidad: <strong>${item.cantidad}</strong></p>
+                                </div>
+                                <span class="text-[10px] px-2 py-0.5 rounded-full border ${badge} font-semibold">${item.estado}</span>
+                            </div>
+                            <div class="text-xs text-slate-400 flex justify-between pt-1 border-t border-slate-100">
+                                <span>Envío: ${item.fechaEnvio || 'N/D'}</span>
+                                <span>Estimado: ${item.fechaEstimada || 'N/D'}</span>
+                            </div>
+                            ${item.estado === 'En Taller' ? `
+                                <div class="pt-2 flex justify-end">
+                                    <button onclick="retornarPintura(${item.id})" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-3 py-1.5 rounded-xl font-semibold transition flex items-center gap-1">
+                                        <i class="fa-solid fa-check"></i> Recibir del Taller
+                                    </button>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                });
+            }
+
+            document.getElementById('stat-en-pintura').innerText = enTallerCount;
+            document.getElementById('stat-retornadas').innerText = retornadasCount;
+        }
+
+        function abrirModalPintura() {
+            const select = document.getElementById('pintura-select-pieza');
+            select.innerHTML = '';
+            inventario.forEach(p => {
+                select.innerHTML += `<option value="${p.id}">${p.nombre} (Stock actual: ${p.cantidad})</option>`;
+            });
+            document.getElementById('modal-pintura').classList.remove('hidden');
+        }
+
+        function cerrarModalPintura() {
+            document.getElementById('modal-pintura').classList.add('hidden');
+        }
+
+        function guardarEnvioPintura() {
+            const piezaId = parseInt(document.getElementById('pintura-select-pieza').value);
+            const cantidad = parseInt(document.getElementById('pintura-cantidad').value) || 0;
+            const taller = document.getElementById('pintura-taller').value.trim() || 'Taller General';
+            const fechaEstimada = document.getElementById('pintura-fecha').value;
+
+            if (cantidad <= 0) {
+                alert('Ingresa una cantidad válida.');
+                return;
+            }
+
+            const piezaObj = inventario.find(p => p.id === piezaId);
+            if (!piezaObj) return;
+
+            if (piezaObj.cantidad < cantidad) {
+                alert('No hay suficiente stock en inventario para enviar esa cantidad a pintura.');
+                return;
+            }
+
+            piezaObj.cantidad -= cantidad;
+
+            pinturaTaller.unshift({
+                id: Date.now(),
+                piezaId: piezaObj.id,
+                nombre: piezaObj.nombre,
+                cantidad,
+                taller,
+                fechaEnvio: new Date().toISOString().split('T')[0],
+                fechaEstimada: fechaEstimada || 'Por definir',
+                estado: 'En Taller'
+            });
+
+            cerrarModalPintura();
+            persistir();
+        }
+
+        function retornarPintura(id) {
+            const item = pinturaTaller.find(p => p.id === id);
+            if (!item) return;
+
+            item.estado = 'Completado';
+
+            if (confirm(`¿Deseas sumar estas ${item.cantidad} unidades de "${item.nombre}" de vuelta al inventario general?`)) {
+                const piezaObj = inventario.find(p => p.id === item.piezaId);
+                if (piezaObj) {
+                    piezaObj.cantidad += item.cantidad;
+                } else {
+                    inventario.push({
+                        id: item.piezaId,
+                        nombre: item.nombre,
+                        cantidad: item.cantidad,
+                        precio: 0.00,
+                        categoria: 'General'
+                    });
+                }
+            }
+
+            persistir();
+        }
+
+        function renderizarCuentas() {
+            let valorTotal = 0;
+            let totalPiezasStock = 0;
+
+            inventario.forEach(p => {
+                valorTotal += (p.cantidad * p.precio);
+                totalPiezasStock += p.cantidad;
+            });
+
+            let totalPiezasTaller = 0;
+            pinturaTaller.filter(p => p.estado === 'En Taller').forEach(p => {
+                totalPiezasTaller += p.cantidad;
+            });
+
+            document.getElementById('val-inventario-total').innerText = `$${valorTotal.toFixed(2)}`;
+            document.getElementById('val-total-piezas').innerText = totalPiezasStock;
+            document.getElementById('val-total-taller').innerText = totalPiezasTaller;
+
+            const disponibles = inventario.filter(p => p.cantidad > 0).length;
+            const agotadas = inventario.filter(p => p.cantidad === 0).length;
+
+            document.getElementById('resumen-estados').innerHTML = `
+                <div class="flex justify-between py-1 border-b border-slate-100">
+                    <span class="text-slate-600">Tipos de piezas en stock</span>
+                    <span class="font-bold text-slate-800">${disponibles}</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-slate-100">
+                    <span class="text-slate-600">Tipos de piezas agotadas</span>
+                    <span class="font-bold text-rose-600">${agotadas}</span>
+                </div>
+                <div class="flex justify-between py-1">
+                    <span class="text-slate-600">Piezas en Taller / Pintura</span>
+                    <span class="font-bold text-purple-600">${totalPiezasTaller}</span>
+                </div>
+            `;
+        }
+
+        function exportarDatos() {
+            const datos = { inventario, pinturaTaller };
+            const blob = new Blob([JSON.stringify(datos, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `backup_inventario_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+        }
+
+        renderizarTodo();
+    </script>
+</body>
+</html>
 
